@@ -11,7 +11,7 @@
             <li><a href="{{ route('contact') }}" class="hover:text-pink-500">Contact</a></li>
         </ul>
         <div class="flex gap-6 font-medium">
-            <a href="#" class="hover:text-pink-500"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="{{ route('cart') }}" class="hover:text-pink-500"><i class="fa-solid fa-cart-shopping"></i></a>
             <a href="{{ route('login') }}" class="hover:text-pink-500"><i class="fa-solid fa-user">   Login</i></a>
         </div>
     </div>

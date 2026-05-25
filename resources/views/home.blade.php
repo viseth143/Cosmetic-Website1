@@ -24,7 +24,7 @@
             </a>
             <a href="{{ route('brand') }}"
                class="border border-pink-500 text-pink-300 hover:bg-pink-900 px-8 py-3 rounded-full text-base font-semibold transition">
-                View Lookbook
+                View Brands
             </a>
         </div>
         <div class="flex flex-wrap justify-center gap-10">
@@ -91,144 +91,46 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
 
             <!-- Product 1 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/lipstick.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-pink-100 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">Best Seller</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★★</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Lipstick</h3>
-                    <p class="text-gray-500 text-sm mb-4">Long-lasting, rich color in 18 shades</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$18</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
+             <div class="container mx-auto px-6">
+             <!-- PRODUCT CARD -->
+        <div class="relative w-[250px] h-[340px] rounded-[20px] overflow-hidden shadow-lg group hover:shadow-2xl transition">
+            <!-- Product Image -->
+            <img src="{{ asset('images/pka_powder.jpg') }}"
+                alt="Velvet Matte Lipstick"
+                class="w-full h-full object-cover" />
+
+            <!-- Dark Gradient Overlay -->
+            <div
+                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+            </div>
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 w-full p-4 text-white">
+
+                <!-- Move content lower -->
+                <div class="mt-10">
+
+                    <!-- Product Name -->
+                    <h2 class="text-md font-bold leading-none">
+                        Product Name
+                    </h2>
+
+                    <!-- Subtitle -->
+                    <p class="text-sm text-white/90 mt-1">
+                        serhguihuierhgm
+                    </p>
+                    <!-- Bottom Row -->
+                    <div class="flex items-center justify-between mt-6">
+                        <!-- Price -->
+                        <span class="text-md font-medium">
+                            14$
+                        </span>
+                        <!-- Button -->
+                        <button class="bg-pink-500 hover:bg-pink-600 text-sm text-white px-5 py-2 rounded-full">
+                            Add to Cart
+                        </button>
                     </div>
                 </div>
             </div>
-
-            <!-- Product 2 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/nes_blush.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">New</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★☆</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Blush</h3>
-                    <p class="text-gray-500 text-sm mb-4">12 blendable shades for every occasion</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$35</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/weyoung_foundation.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">🔥 Hot</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★★</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Weyoung Foundation</h3>
-                    <p class="text-gray-500 text-sm mb-4">Lightweight, full coverage, 30 shades</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$42</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/pka_powder.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-yellow-100 text-yellow-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">Sale 25% off</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★☆</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Loose Powder</h3>
-                    <p class="text-gray-500 text-sm mb-4">Buildable glow for cheeks and temples</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$27</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-10">
-
-            <!-- Product 1 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/lipstick.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-pink-100 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">Best Seller</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★★</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Lipstick</h3>
-                    <p class="text-gray-500 text-sm mb-4">Long-lasting, rich color in 18 shades</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$18</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/nes_blush.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">New</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★☆</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Blush</h3>
-                    <p class="text-gray-500 text-sm mb-4">12 blendable shades for every occasion</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$35</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 3 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/weyoung_foundation.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">🔥 Hot</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★★</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Weyoung Foundation</h3>
-                    <p class="text-gray-500 text-sm mb-4">Lightweight, full coverage, 30 shades</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$42</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                <img src="{{ asset('images/pka_powder.jpg') }}"
-                    alt="Velvet Matte Lipstick"
-                    class="w-full h-44 object-contain object-center bg-white" />
-                <div class="p-5">
-                    <span class="inline-block bg-yellow-100 text-yellow-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">Sale 25% off</span>
-                    <div class="text-yellow-400 text-xs mb-2">★★★★☆</div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Loose Powder</h3>
-                    <p class="text-gray-500 text-sm mb-4">Buildable glow for cheeks and temples</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-500 font-bold text-lg">$27</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white w-8 h-8 rounded-full text-xl font-bold transition">+</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </section>

@@ -33,3 +33,39 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 })->name('register');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
+
+Route::get('/admin/products', function () {
+    return view('admin.products');
+})->name('admin.products');
+
+Route::get('/admin/brands', function () {
+    return view('admin.brands');
+})->name('admin.brands');
+
+Route::get('/admin/customers', function () {
+    return view('admin.customers');
+})->name('admin.customers');
+
+Route::get('/admin/orders', function () {
+    return view('admin.orders');
+})->name('admin.orders');
+
+Route::get('/products-detail', function () {
+    return view('products-detail');
+})->name('product.detail');
+
+Route::get('/cart', function () {
+    return view('cart');
+})->name('cart');
+
+Route::get('/checkout', function () {
+    return view('checkout');
+})->name('checkout');
+
+Route::get('/admin/add-product', function () {
+    return view('admin.add-product');
+})->name('admin.add-product');
