@@ -23,54 +23,53 @@
                 <ul class="space-y-4">
                     <li>
                         <a href="{{ route('admin.dashboard') }}"
-                        class="block bg-pink-500 text-white px-4 py-3 rounded-xl">
+                        class="block {{ request()->routeIs('admin.dashboard') ? 'bg-pink-500 text-white' : 'hover:bg-pink-100' }} px-4 py-3 rounded-xl">
                             Dashboard
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.products') }}"
-                        class="block hover:bg-pink-100 px-4 py-3 rounded-xl">
+                        class="block {{ request()->routeIs('admin.products') ? 'bg-pink-500 text-white' : 'hover:bg-pink-100' }} px-4 py-3 rounded-xl">
                             Products
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.brands') }}"
-                        class="block hover:bg-pink-100 px-4 py-3 rounded-xl">
+                        class="block {{ request()->routeIs('admin.brands') ? 'bg-pink-500 text-white' : 'hover:bg-pink-100' }} px-4 py-3 rounded-xl">
                             Brands
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.orders') }}"
-                        class="block hover:bg-pink-100 px-4 py-3 rounded-xl">
+                        class="block {{ request()->routeIs('admin.orders') ? 'bg-pink-500 text-white' : 'hover:bg-pink-100' }} px-4 py-3 rounded-xl">
                             Orders
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.customers') }}"
-                        class="block hover:bg-pink-100 px-4 py-3 rounded-xl">
+                        class="block {{ request()->routeIs('admin.customers') ? 'bg-pink-500 text-white' : 'hover:bg-pink-100' }} px-4 py-3 rounded-xl">
                             Customers
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('login') }}"
-                        class="block text-red-500 hover:bg-red-50 px-4 py-3 rounded-xl">
-                            Logout
-                        </a>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-left block text-red-500 hover:bg-red-50 px-4 py-3 rounded-xl">
+                                Logout
+                            </button>
+                        </form>
                     </li>
                 </ul>
-
             </nav>
         </aside>
 
-        <main class="flex-1">
+        <!-- MAIN CONTENT — bg-pink-50 applied here so ALL pages get the pink background -->
+        <main class="flex-1 bg-pink-50">
             @yield('content')
         </main>
 
     </div>
 
-    @include('components.footer') 
-
-
-</div>
 </body>
 </html>

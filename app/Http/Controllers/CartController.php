@@ -6,19 +6,18 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
     private function getOrCreateCart()
     {
-        // Use logged-in customer_id or guest session
-        if (Auth::check()) {
-            $customerId = Auth::user()->customer_id;
+        $customerId = Session::get('customer_id');
+
+        if ($customerId) {
             return Cart::firstOrCreate(['customer_id' => $customerId]);
         }
 
-        // Guest: store cart_id in session
         $cartId = session('cart_id');
         if ($cartId) {
             $cart = Cart::find($cartId);
@@ -46,6 +45,11 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
+        // Block admins from adding to cart
+        if (Session::get('is_admin')) {
+            return redirect()->back()->with('error', 'Admins cannot add items to cart.');
+        }
+
         $request->validate([
             'product_id' => 'required|exists:Products,product_id',
             'quantity'   => 'integer|min:1',

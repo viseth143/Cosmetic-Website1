@@ -13,24 +13,25 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Status</th>
+                    <th>Joined</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="border-b">
-                    <td class="py-4">1</td>
-                    <td>John Doe</td>
-                    <td>john@example.com</td>
-                    <td>012345678</td>
-                    <td>
-                        <span class="bg-green-100 text-green-600 px-4 py-1 rounded-full">
-                            Active
-                        </span>
-                    </td>
+                @forelse($customers as $customer)
+                <tr class="border-b hover:bg-pink-50 transition">
+                    <td class="py-4">{{ $customer->customer_id }}</td>
+                    <td>{{ $customer->customer_name }}</td>
+                    <td>{{ $customer->email }}</td>
+                    <td>{{ $customer->phone }}</td>
+                    <td>{{ $customer->created_at ? $customer->created_at->format('d M Y') : '—' }}</td>
                 </tr>
+                @empty
+                <tr>
+                    <td colspan="5" class="py-8 text-center text-gray-400">No customers yet.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 </section>
 @endsection
-

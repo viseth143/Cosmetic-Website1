@@ -19,9 +19,13 @@ input[type=number] {
     <div class="container mx-auto px-6">
         {{-- Success / Error Messages --}}
         @if(session('success'))
-        <div
-            class="bg-green-100 text-green-700 border border-green-300 px-5 py-3 rounded-xl mb-6 flex items-center gap-2">
+        <div class="bg-green-100 text-green-700 border border-green-300 px-5 py-3 rounded-xl mb-6 flex items-center gap-2">
             <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+        </div>
+        @endif
+        @if(session('error'))
+        <div class="bg-red-100 text-red-700 border border-red-300 px-5 py-3 rounded-xl mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-circle-xmark"></i> {{ session('error') }}
         </div>
         @endif
 
@@ -119,7 +123,8 @@ input[type=number] {
                 </div>
                 @endforeach
 
-                {{-- ADD TO CART FORM --}}
+                {{-- ADD TO CART — hidden from admins --}}
+                @if(!Session::get('is_admin'))
                 <form action="{{ route('cart.add') }}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->product_id }}">
@@ -162,6 +167,13 @@ input[type=number] {
                         </a>
                     </div>
                 </form>
+                @else
+                {{-- Admin view-only notice --}}
+                <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-6 py-4 rounded-2xl flex items-center gap-3 mt-4">
+                    <i class="fa-solid fa-shield-halved text-xl"></i>
+                    <p class="font-medium">Admins can view products but cannot make purchases.</p>
+                </div>
+                @endif
 
             </div>
         </div>
@@ -183,8 +195,7 @@ input[type=number] {
                         <p class="text-gray-500 text-sm mb-4 line-clamp-2">{{ $r->description }}</p>
                         <div class="flex justify-between items-center">
                             <span class="text-pink-500 text-xl font-bold">${{ number_format($r->price, 2) }}</span>
-                            <span
-                                class="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-xl text-sm font-semibold">
+                            <span class="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-xl text-sm font-semibold">
                                 View
                             </span>
                         </div>
