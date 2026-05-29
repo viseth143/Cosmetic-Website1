@@ -11,16 +11,19 @@
             <li><a href="{{ route('contact') }}" class="hover:text-pink-500">Contact</a></li>
         </ul>
         <div class="flex gap-6 font-medium items-center">
-            {{-- Hide cart icon from admins --}}
+
             @if(!Session::get('is_admin'))
             <a href="{{ route('cart') }}" class="hover:text-pink-500">
                 <i class="fa-solid fa-cart-shopping"></i>
             </a>
             @endif
 
-            @if(Session::get('customer_id') || Session::get('is_admin'))
+            @if(Session::get('customer_id'))
+            <a href="{{ route('my.orders') }}" class="hover:text-pink-500 text-sm font-semibold">
+                📦 My Orders
+            </a>
             <span class="text-pink-500 font-semibold">
-                👋 {{ Session::get('customer_name') ?? Session::get('admin_name') }}
+                👋 {{ Session::get('customer_name') }}
             </span>
             <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
@@ -28,11 +31,24 @@
                     Logout
                 </button>
             </form>
+
+            @elseif(Session::get('is_admin'))
+            <span class="text-pink-500 font-semibold">
+                👋 {{ Session::get('admin_name') }}
+            </span>
+            <form action="{{ route('logout') }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="hover:text-pink-500 text-red-500 font-semibold">
+                    Logout
+                </button>
+            </form>
+
             @else
             <a href="{{ route('login') }}" class="hover:text-pink-500">
                 <i class="fa-solid fa-user"></i> Login
             </a>
             @endif
+
         </div>
     </div>
 </nav>

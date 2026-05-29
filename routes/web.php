@@ -80,3 +80,29 @@ Route::post('/admin/store-brand', [AdminBrandController::class, 'store'])->name(
 Route::get('/admin/edit-brand/{id}', [AdminBrandController::class, 'edit'])->name('admin.edit-brand');
 Route::put('/admin/update-brand/{id}', [AdminBrandController::class, 'update'])->name('admin.update-brand');
 Route::delete('/admin/delete-brand/{id}', [AdminBrandController::class, 'destroy'])->name('admin.delete-brand');
+
+
+Route::post('/admin/order/{id}/approve', function ($id) {
+    \App\Models\Order::where('order_id', $id)->update(['status' => 'paid']);
+    return redirect()->route('admin.orders')->with('success', '✅ Order #' . $id . ' approved.');
+})->name('admin.order.approve');
+
+Route::post('/admin/order/{id}/reject', function ($id) {
+    \App\Models\Order::where('order_id', $id)->update(['status' => 'rejected']);
+    return redirect()->route('admin.orders')->with('error', '❌ Order #' . $id . ' rejected.');
+})->name('admin.order.reject');
+
+Route::get('/my-orders', function () {
+    $customerId = Session::get('customer_id');
+
+    if (!$customerId) {
+        return redirect()->route('login')->with('error', 'Please login to view your orders.');
+    }
+
+    $orders = \App\Models\Order::with('items.product.images')
+                ->where('customer_id', $customerId)
+                ->latest()
+                ->get();
+
+    return view('my-orders', compact('orders'));
+})->name('my.orders');

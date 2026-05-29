@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -31,26 +32,30 @@ class PaymentController extends Controller
         return view('payment', compact('cartItems', 'subtotal', 'shipping', 'total'));
     }
 
-    public function success()
+    public function success(Request $request)
     {
-        // Mark order as paid
         $orderId = Session::get('order_id');
-        if ($orderId) {
-            Order::where('order_id', $orderId)->update(['status' => 'paid']);
+
+        if ($request->hasFile('payment_screenshot') && $orderId) {
+            $file     = $request->file('payment_screenshot');
+            $fileName = time() . '_receipt_' . $file->getClientOriginalName();
+            $file->move(public_path('receipts'), $fileName);
+
+            Order::where('order_id', $orderId)->update([
+                'status'        => 'pending review',
+                'receipt_image' => 'receipts/' . $fileName,
+            ]);
+        } elseif ($orderId) {
+            Order::where('order_id', $orderId)->update(['status' => 'pending review']);
         }
 
-        // Clear the cart after successful payment
         $customerId = Session::get('customer_id');
         if ($customerId) {
             $cart = Cart::where('customer_id', $customerId)->first();
-            if ($cart) {
-                CartItem::where('cart_id', $cart->cart_id)->delete();
-            }
+            if ($cart) CartItem::where('cart_id', $cart->cart_id)->delete();
         } elseif (session('cart_id')) {
             $cart = Cart::find(session('cart_id'));
-            if ($cart) {
-                CartItem::where('cart_id', $cart->cart_id)->delete();
-            }
+            if ($cart) CartItem::where('cart_id', $cart->cart_id)->delete();
             session()->forget('cart_id');
         }
 

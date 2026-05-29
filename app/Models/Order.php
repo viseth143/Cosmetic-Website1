@@ -13,6 +13,7 @@ class Order extends Model
         'ZipNumber',
         'total_amount',
         'status',
+        'receipt_image',
     ];
 
     public function items()
