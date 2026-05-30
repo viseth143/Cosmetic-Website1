@@ -14,6 +14,7 @@ class Order extends Model
         'total_amount',
         'status',
         'receipt_image',
+        'delivery_status',
     ];
 
     public function items()

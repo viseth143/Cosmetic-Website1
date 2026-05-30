@@ -21,6 +21,7 @@
             @foreach($orders as $order)
             <div class="bg-white rounded-3xl shadow-lg p-8">
 
+                {{-- Order header --}}
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <p class="text-gray-400 text-sm">Order ID</p>
@@ -37,11 +38,11 @@
                     <div>
                         @php
                             $statusConfig = [
-                                'pending'        => ['bg-gray-100 text-gray-600',   '🕐', 'Pending'],
+                                'pending'        => ['bg-gray-100 text-gray-600',    '🕐', 'Pending'],
                                 'pending review' => ['bg-yellow-100 text-yellow-700', '⏳', 'Pending Review'],
-                                'paid'           => ['bg-green-100 text-green-600',  '✅', 'Approved'],
-                                'rejected'       => ['bg-red-100 text-red-600',      '❌', 'Rejected'],
-                                'cancelled'      => ['bg-red-100 text-red-600',      '❌', 'Cancelled'],
+                                'paid'           => ['bg-green-100 text-green-600',   '✅', 'Approved'],
+                                'rejected'       => ['bg-red-100 text-red-600',       '❌', 'Rejected'],
+                                'cancelled'      => ['bg-red-100 text-red-600',       '❌', 'Cancelled'],
                             ];
                             [$colorClass, $icon, $label] = $statusConfig[$order->status] ?? ['bg-gray-100 text-gray-600', '🕐', ucfirst($order->status)];
                         @endphp
@@ -51,19 +52,80 @@
                     </div>
                 </div>
 
-                {{-- Status message --}}
+                {{-- Payment & Delivery section --}}
                 @if($order->status === 'paid')
-                <div class="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 mb-6 flex items-center gap-3">
+                <div class="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 mb-4 flex items-center gap-3">
                     <span class="text-2xl">✅</span>
-                    <p class="text-green-700 font-medium">Your payment has been approved! Your order is being prepared for delivery.</p>
+                    <p class="text-green-700 font-medium">Your payment has been approved!</p>
                 </div>
+
+                {{-- Delivery tracking --}}
+                @php
+                    $steps = [
+                        'preparing' => ['label' => 'Preparing', 'icon' => '📦', 'desc' => 'We are packing your order'],
+                        'shipped'   => ['label' => 'Shipped',   'icon' => '🚚', 'desc' => 'Your order is on the way'],
+                        'delivered' => ['label' => 'Delivered', 'icon' => '🏠', 'desc' => 'Your order has arrived'],
+                    ];
+                    $stepKeys    = array_keys($steps);
+                    $currentStep = $order->delivery_status ?? 'preparing';
+                    $currentIdx  = array_search($currentStep, $stepKeys);
+                @endphp
+
+                <div class="bg-pink-50 border border-pink-100 rounded-2xl px-6 py-5 mb-4">
+                    <p class="font-bold text-gray-700 mb-6">Delivery Status</p>
+
+                    {{-- Progress tracker --}}
+                    <div class="flex items-start justify-between relative px-5">
+
+                        {{-- Background line --}}
+                        <div class="absolute top-5 left-5 right-5 h-1 bg-gray-200 z-0"></div>
+
+                        {{-- Filled line --}}
+                        @php
+                            $fillPercent = $currentIdx == 0 ? '0%' : ($currentIdx == 1 ? '50%' : '100%');
+                        @endphp
+                        <div class="absolute top-5 left-5 h-1 bg-pink-400 z-0" style="width: {{ $fillPercent }}; max-width: calc(100% - 40px)"></div>
+
+                        @foreach($steps as $key => $step)
+                        @php
+                            $stepIdx = array_search($key, $stepKeys);
+                            $done    = $stepIdx <= $currentIdx;
+                        @endphp
+                        <div class="flex flex-col items-center z-10 w-1/3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg mb-2
+                                {{ $done ? 'bg-pink-500 text-white' : 'bg-gray-200 text-gray-400' }}">
+                                {{ $step['icon'] }}
+                            </div>
+                            <p class="font-semibold text-sm text-center {{ $done ? 'text-pink-500' : 'text-gray-400' }}">
+                                {{ $step['label'] }}
+                            </p>
+                            @if($key === $currentStep)
+                            <p class="text-xs text-gray-400 mt-1 text-center">{{ $step['desc'] }}</p>
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- "I Received My Order" button — only show when shipped --}}
+                @if($currentStep === 'shipped')
+                <form action="{{ route('order.received', $order->order_id) }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="w-full mt-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold transition flex items-center justify-center gap-2">
+                        🏠 I Received My Order
+                    </button>
+                </form>
+                @endif
+
                 @elseif($order->status === 'rejected')
-                <div class="bg-red-50 border border-red-200 rounded-2xl px-5 py-4 mb-6 flex items-center gap-3">
+                <div class="bg-red-50 border border-red-200 rounded-2xl px-5 py-4 mb-4 flex items-center gap-3">
                     <span class="text-2xl">❌</span>
                     <p class="text-red-700 font-medium">Your payment was rejected. Please contact us or place a new order.</p>
                 </div>
+
                 @elseif($order->status === 'pending review')
-                <div class="bg-yellow-50 border border-yellow-200 rounded-2xl px-5 py-4 mb-6 flex items-center gap-3">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-2xl px-5 py-4 mb-4 flex items-center gap-3">
                     <span class="text-2xl">⏳</span>
                     <p class="text-yellow-700 font-medium">Your payment screenshot is being reviewed. Please wait.</p>
                 </div>

@@ -9,7 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminBrandController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AdminStaffController; 
+use App\Http\Controllers\Admin\AdminStaffController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ContactController;
@@ -63,7 +63,7 @@ Route::middleware(['customer.auth'])->group(function () {
 
         return view('my-orders', compact('orders'));
     })->name('my.orders');
-    
+
 });
 
 // ─── Admin Dashboard & Orders (Kept separate) ──────────────
@@ -113,3 +113,19 @@ Route::post('/admin/store-brand', [AdminBrandController::class, 'store'])->name(
 Route::get('/admin/edit-brand/{id}', [AdminBrandController::class, 'edit'])->name('admin.edit-brand');
 Route::put('/admin/update-brand/{id}', [AdminBrandController::class, 'update'])->name('admin.update-brand');
 Route::delete('/admin/delete-brand/{id}', [AdminBrandController::class, 'destroy'])->name('admin.delete-brand');
+
+Route::post('/admin/order/{id}/delivery', function ($id, \Illuminate\Http\Request $request) {
+    \App\Models\Order::where('order_id', $id)->update([
+        'delivery_status' => $request->delivery_status
+    ]);
+    return redirect()->route('admin.orders')->with('success', 'Delivery status updated.');
+})->name('admin.order.delivery');
+
+Route::post('/order/{id}/received', function ($id) {
+    $customerId = Session::get('customer_id');
+    $order = \App\Models\Order::where('order_id', $id)
+                ->where('customer_id', $customerId)
+                ->firstOrFail();
+    $order->update(['delivery_status' => 'delivered']);
+    return redirect()->route('my.orders')->with('success', 'Thank you for confirming your delivery! 🎉');
+})->name('order.received');

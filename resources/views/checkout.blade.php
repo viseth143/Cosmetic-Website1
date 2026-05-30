@@ -28,91 +28,133 @@
                 <form method="POST" action="{{ route('checkout.store') }}" id="checkoutForm" novalidate>
                     @csrf
 
+                    {{-- Name --}}
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block mb-2 font-semibold">First Name <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" name="first_name" id="first_name" value="{{ old('first_name') }}"
+                            <label class="block mb-2 font-semibold">First Name <span class="text-red-500">*</span></label>
+                            <input type="text" name="first_name" id="first_name"
+                                value="{{ old('first_name') }}"
                                 placeholder="Enter first name"
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                             <p class="text-red-500 text-sm mt-1 hidden" id="first_name-error"></p>
                         </div>
                         <div>
-                            <label class="block mb-2 font-semibold">Last Name <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}"
+                            <label class="block mb-2 font-semibold">Last Name <span class="text-red-500">*</span></label>
+                            <input type="text" name="last_name" id="last_name"
+                                value="{{ old('last_name') }}"
                                 placeholder="Enter last name"
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                             <p class="text-red-500 text-sm mt-1 hidden" id="last_name-error"></p>
                         </div>
                     </div>
 
+                    {{-- Email --}}
                     <div class="mb-6">
-                        <label class="block mb-2 font-semibold">Email Address <span
-                                class="text-red-500">*</span></label>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="Enter email"
+                        <label class="block mb-2 font-semibold">Email Address <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" id="email"
+                            value="{{ old('email', $customer->email ?? '') }}"
+                            placeholder="Enter email"
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                         <p class="text-red-500 text-sm mt-1 hidden" id="email-error"></p>
                     </div>
 
+                    {{-- Phone --}}
                     <div class="mb-6">
                         <label class="block mb-2 font-semibold">Phone Number <span class="text-red-500">*</span></label>
-                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
+                        <input type="text" name="phone" id="phone"
+                            value="{{ old('phone', $customer->phone ?? '') }}"
                             placeholder="Enter phone number"
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                         <p class="text-red-500 text-sm mt-1 hidden" id="phone-error"></p>
                     </div>
 
+                    {{-- Province --}}
                     <div class="mb-6">
-                        <label class="block mb-2 font-semibold">Address <span class="text-red-500">*</span></label>
-                        <input type="text" name="address" id="address" value="{{ old('address') }}"
-                            placeholder="Street address"
+                        <label class="block mb-2 font-semibold">Province <span class="text-red-500">*</span></label>
+                        <select name="province" id="province"
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
-                        <p class="text-red-500 text-sm mt-1 hidden" id="address-error"></p>
+                            <option value="">Select province</option>
+                            <option value="Phnom Penh"      {{ old('province') == 'Phnom Penh'      ? 'selected' : '' }}>Phnom Penh</option>
+                            <option value="Siem Reap"       {{ old('province') == 'Siem Reap'       ? 'selected' : '' }}>Siem Reap</option>
+                            <option value="Battambang"      {{ old('province') == 'Battambang'      ? 'selected' : '' }}>Battambang</option>
+                            <option value="Kampong Cham"    {{ old('province') == 'Kampong Cham'    ? 'selected' : '' }}>Kampong Cham</option>
+                            <option value="Kampong Chhnang" {{ old('province') == 'Kampong Chhnang' ? 'selected' : '' }}>Kampong Chhnang</option>
+                            <option value="Kampong Speu"    {{ old('province') == 'Kampong Speu'    ? 'selected' : '' }}>Kampong Speu</option>
+                            <option value="Kampong Thom"    {{ old('province') == 'Kampong Thom'    ? 'selected' : '' }}>Kampong Thom</option>
+                            <option value="Kampot"          {{ old('province') == 'Kampot'          ? 'selected' : '' }}>Kampot</option>
+                            <option value="Kandal"          {{ old('province') == 'Kandal'          ? 'selected' : '' }}>Kandal</option>
+                            <option value="Kep"             {{ old('province') == 'Kep'             ? 'selected' : '' }}>Kep</option>
+                            <option value="Koh Kong"        {{ old('province') == 'Koh Kong'        ? 'selected' : '' }}>Koh Kong</option>
+                            <option value="Kratie"          {{ old('province') == 'Kratie'          ? 'selected' : '' }}>Kratie</option>
+                            <option value="Mondulkiri"      {{ old('province') == 'Mondulkiri'      ? 'selected' : '' }}>Mondulkiri</option>
+                            <option value="Oddar Meanchey"  {{ old('province') == 'Oddar Meanchey'  ? 'selected' : '' }}>Oddar Meanchey</option>
+                            <option value="Pailin"          {{ old('province') == 'Pailin'          ? 'selected' : '' }}>Pailin</option>
+                            <option value="Preah Sihanouk"  {{ old('province') == 'Preah Sihanouk'  ? 'selected' : '' }}>Preah Sihanouk</option>
+                            <option value="Preah Vihear"    {{ old('province') == 'Preah Vihear'    ? 'selected' : '' }}>Preah Vihear</option>
+                            <option value="Prey Veng"       {{ old('province') == 'Prey Veng'       ? 'selected' : '' }}>Prey Veng</option>
+                            <option value="Pursat"          {{ old('province') == 'Pursat'          ? 'selected' : '' }}>Pursat</option>
+                            <option value="Ratanakiri"      {{ old('province') == 'Ratanakiri'      ? 'selected' : '' }}>Ratanakiri</option>
+                            <option value="Stung Treng"     {{ old('province') == 'Stung Treng'     ? 'selected' : '' }}>Stung Treng</option>
+                            <option value="Svay Rieng"      {{ old('province') == 'Svay Rieng'      ? 'selected' : '' }}>Svay Rieng</option>
+                            <option value="Takeo"           {{ old('province') == 'Takeo'           ? 'selected' : '' }}>Takeo</option>
+                            <option value="Tbong Khmum"     {{ old('province') == 'Tbong Khmum'     ? 'selected' : '' }}>Tbong Khmum</option>
+                        </select>
+                        <p class="text-red-500 text-sm mt-1 hidden" id="province-error"></p>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block mb-2 font-semibold">City <span class="text-red-500">*</span></label>
-                            <input type="text" name="city" id="city" value="{{ old('city') }}" placeholder="Enter city"
-                                class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
-                            <p class="text-red-500 text-sm mt-1 hidden" id="city-error"></p>
-                        </div>
-                        <div>
-                            <label class="block mb-2 font-semibold">Postal Code <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code') }}"
-                                placeholder="Postal code"
-                                class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
-                            <p class="text-red-500 text-sm mt-1 hidden" id="postal_code-error"></p>
-                        </div>
+                    {{-- District --}}
+                    <div class="mb-6">
+                        <label class="block mb-2 font-semibold">District / Khan <span class="text-red-500">*</span></label>
+                        <input type="text" name="district" id="district"
+                            value="{{ old('district') }}"
+                            placeholder="e.g. Daun Penh, Sen Sok, Meanchey"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
+                        <p class="text-red-500 text-sm mt-1 hidden" id="district-error"></p>
                     </div>
 
+                    {{-- House / Street Address (optional) --}}
+                    <div class="mb-6">
+                        <label class="block mb-2 font-semibold">House / Street Address <span class="text-gray-400 font-normal">(optional)</span></label>
+                        <input type="text" name="address" id="address"
+                            value="{{ old('address') }}"
+                            placeholder="e.g. House #12, Street 271, Boeng Salang"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
+                    </div>
+
+                    {{-- Delivery Note (optional) --}}
+                    <div class="mb-6">
+                        <label class="block mb-2 font-semibold">Delivery Note <span class="text-gray-400 font-normal">(optional)</span></label>
+                        <input type="text" name="delivery_note" id="delivery_note"
+                            value="{{ old('delivery_note') }}"
+                            placeholder="e.g. Near the market, call when arrived, blue gate"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
+                    </div>
+
+                    {{-- Payment Method --}}
                     <div class="mb-8">
-                        <label class="block mb-4 font-semibold text-xl">Payment Method <span
-                                class="text-red-500">*</span></label>
+                        <label class="block mb-4 font-semibold text-xl">Payment Method <span class="text-red-500">*</span></label>
+
+                        {{-- ABA Pay — always visible --}}
                         <div class="space-y-4">
                             <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="radio" name="payment_method" value="card"
-                                    class="text-pink-500 payment-radio"
-                                    {{ old('payment_method') == 'card' ? 'checked' : '' }}>
-                                <span>Credit / Debit Card</span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="radio" name="payment_method" value="aba"
-                                    class="text-pink-500 payment-radio"
+                                <input type="radio" name="payment_method" value="aba" class="text-pink-500 payment-radio"
                                     {{ old('payment_method', 'aba') == 'aba' ? 'checked' : '' }}>
-                                <span>AC Pay</span>
+                                <span>ABA Pay</span>
                             </label>
-                            <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="radio" name="payment_method" value="cod"
-                                    class="text-pink-500 payment-radio"
+
+                            {{-- Cash on Delivery — only for Phnom Penh --}}
+                            <label class="flex items-center gap-3 cursor-pointer" id="cod-option" style="display:none">
+                                <input type="radio" name="payment_method" value="cod" class="text-pink-500 payment-radio"
                                     {{ old('payment_method') == 'cod' ? 'checked' : '' }}>
                                 <span>Cash on Delivery</span>
                             </label>
                         </div>
-                        <p class="text-red-500 text-sm mt-2 hidden" id="payment-error">Please select a payment method.
+
+                        {{-- Info message --}}
+                        <p id="payment-info" class="text-gray-400 text-sm mt-3 hidden">
+                            🚚 Cash on Delivery is only available in Phnom Penh.
                         </p>
+                        <p class="text-red-500 text-sm mt-2 hidden" id="payment-error">Please select a payment method.</p>
                     </div>
 
                     <button type="submit" id="placeOrderBtn"
@@ -145,13 +187,17 @@
                 @endforeach
                 <div class="space-y-4 mt-4">
                     <div class="flex justify-between text-gray-600">
-                        <span>Subtotal</span><span class="font-bold">${{ number_format($subtotal, 2) }}</span>
+                        <span>Subtotal</span>
+                        <span class="font-bold">${{ number_format($subtotal, 2) }}</span>
                     </div>
                     <div class="flex justify-between text-gray-600">
                         <span>Shipping</span>
                         <span class="font-bold">
-                            @if($shipping == 0)<span class="text-green-500">Free 🎉</span>
-                            @else ${{ number_format($shipping, 2) }} @endif
+                            @if($shipping == 0)
+                            <span class="text-green-500">Free 🎉</span>
+                            @else
+                            ${{ number_format($shipping, 2) }}
+                            @endif
                         </span>
                     </div>
                     <div class="flex justify-between text-xl font-bold border-t pt-4">
@@ -168,46 +214,22 @@
 
 <script>
 const chFields = {
-    first_name: {
-        el: document.getElementById('first_name'),
-        err: document.getElementById('first_name-error')
-    },
-    last_name: {
-        el: document.getElementById('last_name'),
-        err: document.getElementById('last_name-error')
-    },
-    email: {
-        el: document.getElementById('email'),
-        err: document.getElementById('email-error')
-    },
-    phone: {
-        el: document.getElementById('phone'),
-        err: document.getElementById('phone-error')
-    },
-    address: {
-        el: document.getElementById('address'),
-        err: document.getElementById('address-error')
-    },
-    city: {
-        el: document.getElementById('city'),
-        err: document.getElementById('city-error')
-    },
-    postal_code: {
-        el: document.getElementById('postal_code'),
-        err: document.getElementById('postal_code-error')
-    },
+    first_name: { el: document.getElementById('first_name'), err: document.getElementById('first_name-error') },
+    last_name:  { el: document.getElementById('last_name'),  err: document.getElementById('last_name-error') },
+    email:      { el: document.getElementById('email'),      err: document.getElementById('email-error') },
+    phone:      { el: document.getElementById('phone'),      err: document.getElementById('phone-error') },
+    province:   { el: document.getElementById('province'),   err: document.getElementById('province-error') },
+    district:   { el: document.getElementById('district'),   err: document.getElementById('district-error') },
 };
-const placeBtn = document.getElementById('placeOrderBtn');
-const paymentErr = document.getElementById('payment-error');
+const placeBtn      = document.getElementById('placeOrderBtn');
+const paymentErr    = document.getElementById('payment-error');
+const paymentInfo   = document.getElementById('payment-info');
 const paymentRadios = document.querySelectorAll('.payment-radio');
+const codOption     = document.getElementById('cod-option');
+const provinceEl    = document.getElementById('province');
 
-function isEmail(v) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-}
-
-function isPhone(v) {
-    return /^[\d\s\+\-]{6,20}$/.test(v);
-}
+function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+function isPhone(v) { return /^[\d\s\+\-]{6,20}$/.test(v); }
 
 function showErr(f, msg) {
     f.el.classList.add('border-red-400');
@@ -215,7 +237,6 @@ function showErr(f, msg) {
     f.err.textContent = msg;
     f.err.classList.remove('hidden');
 }
-
 function clearErr(f) {
     f.el.classList.remove('border-red-400');
     f.el.classList.add('border-gray-300');
@@ -223,22 +244,34 @@ function clearErr(f) {
 }
 
 function validateCh(key) {
-    const f = chFields[key];
+    const f   = chFields[key];
     const val = f.el.value.trim();
-    if (key === 'email' && val && !isEmail(val)) {
-        showErr(f, 'Enter a valid email.');
-        return false;
-    }
-    if (key === 'phone' && val && !isPhone(val)) {
-        showErr(f, 'Enter a valid phone number.');
-        return false;
-    }
-    if (!val) {
-        showErr(f, 'This field is required.');
-        return false;
-    }
+    if (key === 'email' && val && !isEmail(val)) { showErr(f, 'Enter a valid email.'); return false; }
+    if (key === 'phone' && val && !isPhone(val)) { showErr(f, 'Enter a valid phone number.'); return false; }
+    if (!val) { showErr(f, 'This field is required.'); return false; }
     clearErr(f);
     return true;
+}
+
+function updatePaymentOptions() {
+    const isPhnomPenh = provinceEl.value === 'Phnom Penh';
+
+    if (isPhnomPenh) {
+        // Show COD option
+        codOption.style.display = 'flex';
+        paymentInfo.classList.add('hidden');
+    } else {
+        // Hide COD and uncheck it if selected
+        codOption.style.display = 'none';
+        paymentInfo.classList.remove('hidden');
+        const codRadio = codOption.querySelector('input[type="radio"]');
+        if (codRadio.checked) {
+            codRadio.checked = false;
+            // Auto-select ABA pay
+            document.querySelector('input[value="aba"]').checked = true;
+        }
+    }
+    checkCheckout();
 }
 
 function checkCheckout() {
@@ -249,34 +282,34 @@ function checkCheckout() {
         return val.length > 0;
     });
     const paymentOk = [...paymentRadios].some(r => r.checked);
-    const allOk = textOk && paymentOk;
+    const allOk     = textOk && paymentOk;
 
     placeBtn.disabled = !allOk;
-    placeBtn.classList.toggle('bg-pink-500', allOk);
-    placeBtn.classList.toggle('hover:bg-pink-600', allOk);
-    placeBtn.classList.toggle('cursor-pointer', allOk);
-    placeBtn.classList.toggle('bg-pink-300', !allOk);
+    placeBtn.classList.toggle('bg-pink-500',        allOk);
+    placeBtn.classList.toggle('hover:bg-pink-600',  allOk);
+    placeBtn.classList.toggle('cursor-pointer',     allOk);
+    placeBtn.classList.toggle('bg-pink-300',        !allOk);
     placeBtn.classList.toggle('cursor-not-allowed', !allOk);
 }
 
 Object.keys(chFields).forEach(k => {
-    chFields[k].el.addEventListener('blur', () => {
-        validateCh(k);
-        checkCheckout();
-    });
-    chFields[k].el.addEventListener('input', () => {
-        validateCh(k);
-        checkCheckout();
-    });
+    chFields[k].el.addEventListener('blur',   () => { validateCh(k); checkCheckout(); });
+    chFields[k].el.addEventListener('input',  () => { validateCh(k); checkCheckout(); });
+    chFields[k].el.addEventListener('change', () => { validateCh(k); checkCheckout(); });
 });
+
+// Update payment options when province changes
+provinceEl.addEventListener('change', updatePaymentOptions);
 
 paymentRadios.forEach(r => r.addEventListener('change', () => {
     paymentErr.classList.add('hidden');
     checkCheckout();
 }));
 
-// Check on load in case browser autofills
-window.addEventListener('load', checkCheckout);
+window.addEventListener('load', () => {
+    updatePaymentOptions();
+    checkCheckout();
+});
 </script>
 
 @endsection

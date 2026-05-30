@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
@@ -35,7 +36,12 @@ class CheckoutController extends Controller
         $shipping = $subtotal > 50 ? 0 : 5;
         $total    = $subtotal + $shipping;
 
-        return view('checkout', compact('cartItems', 'subtotal', 'shipping', 'total'));
+        $customer = null;
+        if (Session::get('customer_id')) {
+            $customer = Customer::find(Session::get('customer_id'));
+        }
+
+        return view('checkout', compact('cartItems', 'subtotal', 'shipping', 'total', 'customer'));
     }
 
     public function store(Request $request)
@@ -45,10 +51,11 @@ class CheckoutController extends Controller
             'last_name'      => 'required|string|max:100',
             'email'          => 'required|email',
             'phone'          => 'required|string|max:20',
-            'address'        => 'required|string|max:255',
-            'city'           => 'required|string|max:100',
-            'postal_code'    => 'required|string|max:20',
-            'payment_method' => 'required|in:card,aba,cod',
+            'province'       => 'required|string|max:100',
+            'district'       => 'required|string|max:100',
+            'address'        => 'nullable|string|max:255',
+            'delivery_note'  => 'nullable|string|max:255',
+            'payment_method' => 'required|in:aba,cod',
         ]);
 
         $cart = $this->getCart();
@@ -64,15 +71,13 @@ class CheckoutController extends Controller
         $shipping = $subtotal > 50 ? 0 : 5;
         $total    = $subtotal + $shipping;
 
-        // Create order
         $order = Order::create([
             'customer_id'  => Session::get('customer_id'),
-            'ZipNumber'    => $request->postal_code,
+            'ZipNumber'    => $request->district,
             'total_amount' => $total,
             'status'       => 'pending',
         ]);
 
-        // Create order items
         foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id'   => $order->order_id,
@@ -83,11 +88,12 @@ class CheckoutController extends Controller
             ]);
         }
 
-        // Store order info in session for payment page
         Session::put('order_id', $order->order_id);
         Session::put('order_total', $total);
         Session::put('checkout_data', $request->only(
-            'first_name', 'last_name', 'email', 'phone', 'address', 'city', 'postal_code', 'payment_method'
+            'first_name', 'last_name', 'email', 'phone',
+            'province', 'district', 'address', 'delivery_note',
+            'payment_method'
         ));
 
         return redirect()->route('payment');
