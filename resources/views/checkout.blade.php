@@ -30,21 +30,26 @@
 
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block mb-2 font-semibold">First Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="first_name" id="first_name" value="{{ old('first_name') }}" placeholder="Enter first name"
+                            <label class="block mb-2 font-semibold">First Name <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" name="first_name" id="first_name" value="{{ old('first_name') }}"
+                                placeholder="Enter first name"
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                             <p class="text-red-500 text-sm mt-1 hidden" id="first_name-error"></p>
                         </div>
                         <div>
-                            <label class="block mb-2 font-semibold">Last Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}" placeholder="Enter last name"
+                            <label class="block mb-2 font-semibold">Last Name <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}"
+                                placeholder="Enter last name"
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                             <p class="text-red-500 text-sm mt-1 hidden" id="last_name-error"></p>
                         </div>
                     </div>
 
                     <div class="mb-6">
-                        <label class="block mb-2 font-semibold">Email Address <span class="text-red-500">*</span></label>
+                        <label class="block mb-2 font-semibold">Email Address <span
+                                class="text-red-500">*</span></label>
                         <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="Enter email"
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                         <p class="text-red-500 text-sm mt-1 hidden" id="email-error"></p>
@@ -52,14 +57,16 @@
 
                     <div class="mb-6">
                         <label class="block mb-2 font-semibold">Phone Number <span class="text-red-500">*</span></label>
-                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}" placeholder="Enter phone number"
+                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
+                            placeholder="Enter phone number"
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                         <p class="text-red-500 text-sm mt-1 hidden" id="phone-error"></p>
                     </div>
 
                     <div class="mb-6">
                         <label class="block mb-2 font-semibold">Address <span class="text-red-500">*</span></label>
-                        <input type="text" name="address" id="address" value="{{ old('address') }}" placeholder="Street address"
+                        <input type="text" name="address" id="address" value="{{ old('address') }}"
+                            placeholder="Street address"
                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                         <p class="text-red-500 text-sm mt-1 hidden" id="address-error"></p>
                     </div>
@@ -72,33 +79,40 @@
                             <p class="text-red-500 text-sm mt-1 hidden" id="city-error"></p>
                         </div>
                         <div>
-                            <label class="block mb-2 font-semibold">Postal Code <span class="text-red-500">*</span></label>
-                            <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code') }}" placeholder="Postal code"
+                            <label class="block mb-2 font-semibold">Postal Code <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code') }}"
+                                placeholder="Postal code"
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition">
                             <p class="text-red-500 text-sm mt-1 hidden" id="postal_code-error"></p>
                         </div>
                     </div>
 
                     <div class="mb-8">
-                        <label class="block mb-4 font-semibold text-xl">Payment Method <span class="text-red-500">*</span></label>
+                        <label class="block mb-4 font-semibold text-xl">Payment Method <span
+                                class="text-red-500">*</span></label>
                         <div class="space-y-4">
                             <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="radio" name="payment_method" value="card" class="text-pink-500 payment-radio"
+                                <input type="radio" name="payment_method" value="card"
+                                    class="text-pink-500 payment-radio"
                                     {{ old('payment_method') == 'card' ? 'checked' : '' }}>
                                 <span>Credit / Debit Card</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="radio" name="payment_method" value="aba" class="text-pink-500 payment-radio"
+                                <input type="radio" name="payment_method" value="aba"
+                                    class="text-pink-500 payment-radio"
                                     {{ old('payment_method', 'aba') == 'aba' ? 'checked' : '' }}>
-                                <span>ABA Pay</span>
+                                <span>AC Pay</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="radio" name="payment_method" value="cod" class="text-pink-500 payment-radio"
+                                <input type="radio" name="payment_method" value="cod"
+                                    class="text-pink-500 payment-radio"
                                     {{ old('payment_method') == 'cod' ? 'checked' : '' }}>
                                 <span>Cash on Delivery</span>
                             </label>
                         </div>
-                        <p class="text-red-500 text-sm mt-2 hidden" id="payment-error">Please select a payment method.</p>
+                        <p class="text-red-500 text-sm mt-2 hidden" id="payment-error">Please select a payment method.
+                        </p>
                     </div>
 
                     <button type="submit" id="placeOrderBtn"
@@ -154,36 +168,77 @@
 
 <script>
 const chFields = {
-    first_name:  { el: document.getElementById('first_name'),  err: document.getElementById('first_name-error') },
-    last_name:   { el: document.getElementById('last_name'),   err: document.getElementById('last_name-error') },
-    email:       { el: document.getElementById('email'),       err: document.getElementById('email-error') },
-    phone:       { el: document.getElementById('phone'),       err: document.getElementById('phone-error') },
-    address:     { el: document.getElementById('address'),     err: document.getElementById('address-error') },
-    city:        { el: document.getElementById('city'),        err: document.getElementById('city-error') },
-    postal_code: { el: document.getElementById('postal_code'), err: document.getElementById('postal_code-error') },
+    first_name: {
+        el: document.getElementById('first_name'),
+        err: document.getElementById('first_name-error')
+    },
+    last_name: {
+        el: document.getElementById('last_name'),
+        err: document.getElementById('last_name-error')
+    },
+    email: {
+        el: document.getElementById('email'),
+        err: document.getElementById('email-error')
+    },
+    phone: {
+        el: document.getElementById('phone'),
+        err: document.getElementById('phone-error')
+    },
+    address: {
+        el: document.getElementById('address'),
+        err: document.getElementById('address-error')
+    },
+    city: {
+        el: document.getElementById('city'),
+        err: document.getElementById('city-error')
+    },
+    postal_code: {
+        el: document.getElementById('postal_code'),
+        err: document.getElementById('postal_code-error')
+    },
 };
-const placeBtn    = document.getElementById('placeOrderBtn');
-const paymentErr  = document.getElementById('payment-error');
+const placeBtn = document.getElementById('placeOrderBtn');
+const paymentErr = document.getElementById('payment-error');
 const paymentRadios = document.querySelectorAll('.payment-radio');
 
-function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-function isPhone(v) { return /^[\d\s\+\-]{6,20}$/.test(v); }
+function isEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+function isPhone(v) {
+    return /^[\d\s\+\-]{6,20}$/.test(v);
+}
 
 function showErr(f, msg) {
-    f.el.classList.add('border-red-400'); f.el.classList.remove('border-gray-300');
-    f.err.textContent = msg; f.err.classList.remove('hidden');
+    f.el.classList.add('border-red-400');
+    f.el.classList.remove('border-gray-300');
+    f.err.textContent = msg;
+    f.err.classList.remove('hidden');
 }
+
 function clearErr(f) {
-    f.el.classList.remove('border-red-400'); f.el.classList.add('border-gray-300');
+    f.el.classList.remove('border-red-400');
+    f.el.classList.add('border-gray-300');
     f.err.classList.add('hidden');
 }
 
 function validateCh(key) {
-    const f = chFields[key]; const val = f.el.value.trim();
-    if (key === 'email' && val && !isEmail(val)) { showErr(f, 'Enter a valid email.'); return false; }
-    if (key === 'phone' && val && !isPhone(val)) { showErr(f, 'Enter a valid phone number.'); return false; }
-    if (!val) { showErr(f, 'This field is required.'); return false; }
-    clearErr(f); return true;
+    const f = chFields[key];
+    const val = f.el.value.trim();
+    if (key === 'email' && val && !isEmail(val)) {
+        showErr(f, 'Enter a valid email.');
+        return false;
+    }
+    if (key === 'phone' && val && !isPhone(val)) {
+        showErr(f, 'Enter a valid phone number.');
+        return false;
+    }
+    if (!val) {
+        showErr(f, 'This field is required.');
+        return false;
+    }
+    clearErr(f);
+    return true;
 }
 
 function checkCheckout() {
@@ -205,8 +260,14 @@ function checkCheckout() {
 }
 
 Object.keys(chFields).forEach(k => {
-    chFields[k].el.addEventListener('blur',  () => { validateCh(k); checkCheckout(); });
-    chFields[k].el.addEventListener('input', () => { validateCh(k); checkCheckout(); });
+    chFields[k].el.addEventListener('blur', () => {
+        validateCh(k);
+        checkCheckout();
+    });
+    chFields[k].el.addEventListener('input', () => {
+        validateCh(k);
+        checkCheckout();
+    });
 });
 
 paymentRadios.forEach(r => r.addEventListener('change', () => {

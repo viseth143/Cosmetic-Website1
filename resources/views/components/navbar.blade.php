@@ -1,12 +1,19 @@
 @php
-// Get cart count
+// Get cart count matching the CartController logic
 $cartCount = 0;
-if (session('cart_id')) {
-$cartCount = \App\Models\CartItem::where('cart_id', session('cart_id'))->sum('quantity');
-} elseif (auth()->check() && auth()->user()->customer_id) {
-$cart = \App\Models\Cart::where('customer_id', auth()->user()->customer_id)->first();
+$customerId = Session::get('customer_id');
+
+if ($customerId) {
+// If user is logged in, find their active cart record using customer_id
+$cart = \App\Models\Cart::where('customer_id', $customerId)->first();
 if ($cart) {
 $cartCount = \App\Models\CartItem::where('cart_id', $cart->cart_id)->sum('quantity');
+}
+} else {
+// If guest user, check using the session's cart_id
+$cartId = session('cart_id');
+if ($cartId) {
+$cartCount = \App\Models\CartItem::where('cart_id', $cartId)->sum('quantity');
 }
 }
 @endphp
@@ -26,7 +33,7 @@ $cartCount = \App\Models\CartItem::where('cart_id', $cart->cart_id)->sum('quanti
         <div class="flex gap-6 font-medium items-center">
 
             {{-- Cart with badge --}}
-            <a href="{{ route('cart') }}" class="relative hover:text-pink-500">
+            <a href="{{ route('cart') }}" class="relative hover:text-pink-500 mr-2">
                 <i class="fa-solid fa-cart-shopping text-xl"></i>
                 @if($cartCount > 0)
                 <span class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs font-bold
@@ -36,11 +43,21 @@ $cartCount = \App\Models\CartItem::where('cart_id', $cart->cart_id)->sum('quanti
                 @endif
             </a>
 
-            {{-- User --}}
+            {{-- User Authentication Section --}}
             @if(Session::get('customer_id') || Session::get('is_admin'))
+
+            {{-- NEW: Show 'My Orders' tracking link if they are logged in as a normal customer --}}
+            @if(Session::get('customer_id'))
+            <a href="{{ route('my.orders') }}"
+                class="text-gray-600 hover:text-pink-500 flex items-center gap-1 text-sm font-semibold transition">
+                <i class="fa-solid fa-box-open"></i> My Orders
+            </a>
+            @endif
+
             <span class="text-pink-500 font-semibold">
-                👋 {{ Session::get('customer_name') ?? Session::get('admin_name') }}
+                👋 {{ Session::get('customer_name') ?? Session::get('admin_name') ?? 'seth' }}
             </span>
+
             <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
                 <button type="submit" class="hover:text-pink-500 text-red-500 font-semibold">

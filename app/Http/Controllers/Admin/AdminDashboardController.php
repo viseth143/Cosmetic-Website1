@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Customer;
+use App\Models\Order; // Added this to fetch order details properly
 use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
+    // 1. Controls your Main Dashboard Screen
     public function index()
     {
         $adminEmails    = DB::table('users')->pluck('email')->toArray();
@@ -27,5 +29,17 @@ class AdminDashboardController extends Controller
             'totalCustomers',
             'recentProducts'
         ));
+    }
+
+    // 2. Controls your Admin Orders Screen (Fixes the $0.00 prices)
+    public function orders()
+    {
+        // explicitly select all properties from the orders data table
+        $orders = Order::with('customer')
+            ->select('orders.*')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.orders', compact('orders'));
     }
 }
