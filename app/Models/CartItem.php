@@ -1,12 +1,15 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
     protected $table = 'cart_item';
     protected $primaryKey = 'cart_item_id';
-    protected $fillable = ['cart_id', 'product_id', 'quantity', 'price'];
+
+    protected $fillable = ['cart_id', 'product_id', 'quantity', 'price', 'selected_option'];
 
     public function product()
     {

@@ -2,7 +2,6 @@
 
 @section('content')
 
-<!-- PAGE HEADER -->
 <section class="bg-pink-100 py-16">
     <div class="container mx-auto px-6 text-center">
         <h1 class="text-5xl font-bold text-pink-600 mb-4">Shopping Cart</h1>
@@ -10,13 +9,11 @@
     </div>
 </section>
 
-<!-- CART SECTION -->
 <section class="py-16 bg-pink-50 min-h-screen">
     <div class="container mx-auto px-6">
 
         @if(session('success'))
-        <div
-            class="bg-green-100 text-green-700 border border-green-300 px-5 py-3 rounded-xl mb-6 flex items-center gap-2">
+        <div class="bg-green-100 text-green-700 border border-green-300 px-5 py-3 rounded-xl mb-6 flex items-center gap-2">
             <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
         </div>
         @endif
@@ -49,8 +46,10 @@
                             alt="{{ $item->product->name }}" class="w-24 h-24 rounded-2xl object-cover shadow-sm">
                         <div>
                             <h3 class="text-lg font-bold text-gray-800 mb-1">{{ $item->product->name }}</h3>
-                            <p class="text-gray-500 text-sm mb-1">{{ Str::limit($item->product->description, 50) }}</p>
-                            <span class="text-pink-500 font-bold text-base">${{ number_format($item->price, 2) }}</span>
+                            @if($item->product->description)
+                            <p class="text-pink-500 text-sm font-medium mb-1">{{ $item->product->description }}</p>
+                            @endif
+                            <span class="text-gray-500 font-bold text-base">${{ number_format($item->price, 2) }}</span>
                         </div>
                     </div>
 

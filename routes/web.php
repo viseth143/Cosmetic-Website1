@@ -129,3 +129,10 @@ Route::post('/order/{id}/received', function ($id) {
     $order->update(['delivery_status' => 'delivered']);
     return redirect()->route('my.orders')->with('success', 'Thank you for confirming your delivery! 🎉');
 })->name('order.received');
+
+Route::delete('/admin/order/{id}', function ($id) {
+    $order = \App\Models\Order::findOrFail($id);
+    \App\Models\OrderItem::where('order_id', $id)->delete();
+    $order->delete();
+    return redirect()->route('admin.orders')->with('success', 'Order #' . $id . ' deleted.');
+})->name('admin.order.delete');

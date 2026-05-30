@@ -21,7 +21,6 @@
             @foreach($orders as $order)
             <div class="bg-white rounded-3xl shadow-lg p-8">
 
-                {{-- Order header --}}
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <p class="text-gray-400 text-sm">Order ID</p>
@@ -52,14 +51,12 @@
                     </div>
                 </div>
 
-                {{-- Payment & Delivery section --}}
                 @if($order->status === 'paid')
                 <div class="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 mb-4 flex items-center gap-3">
                     <span class="text-2xl">✅</span>
                     <p class="text-green-700 font-medium">Your payment has been approved!</p>
                 </div>
 
-                {{-- Delivery tracking --}}
                 @php
                     $steps = [
                         'preparing' => ['label' => 'Preparing', 'icon' => '📦', 'desc' => 'We are packing your order'],
@@ -69,23 +66,14 @@
                     $stepKeys    = array_keys($steps);
                     $currentStep = $order->delivery_status ?? 'preparing';
                     $currentIdx  = array_search($currentStep, $stepKeys);
+                    $fillPercent = $currentIdx == 0 ? '0%' : ($currentIdx == 1 ? '50%' : '100%');
                 @endphp
 
                 <div class="bg-pink-50 border border-pink-100 rounded-2xl px-6 py-5 mb-4">
                     <p class="font-bold text-gray-700 mb-6">Delivery Status</p>
-
-                    {{-- Progress tracker --}}
                     <div class="flex items-start justify-between relative px-5">
-
-                        {{-- Background line --}}
                         <div class="absolute top-5 left-5 right-5 h-1 bg-gray-200 z-0"></div>
-
-                        {{-- Filled line --}}
-                        @php
-                            $fillPercent = $currentIdx == 0 ? '0%' : ($currentIdx == 1 ? '50%' : '100%');
-                        @endphp
                         <div class="absolute top-5 left-5 h-1 bg-pink-400 z-0" style="width: {{ $fillPercent }}; max-width: calc(100% - 40px)"></div>
-
                         @foreach($steps as $key => $step)
                         @php
                             $stepIdx = array_search($key, $stepKeys);
@@ -107,7 +95,6 @@
                     </div>
                 </div>
 
-                {{-- "I Received My Order" button — only show when shipped --}}
                 @if($currentStep === 'shipped')
                 <form action="{{ route('order.received', $order->order_id) }}" method="POST">
                     @csrf
@@ -131,7 +118,6 @@
                 </div>
                 @endif
 
-                {{-- Order items --}}
                 <div class="space-y-4">
                     @foreach($order->items as $item)
                     <div class="flex items-center gap-4 border-t pt-4">
@@ -139,6 +125,9 @@
                             class="w-16 h-16 rounded-xl object-cover">
                         <div class="flex-1">
                             <p class="font-bold text-gray-800">{{ $item->product->name }}</p>
+                            @if($item->product->description)
+                            <p class="text-pink-500 text-xs font-medium">{{ $item->product->description }}</p>
+                            @endif
                             <p class="text-gray-400 text-sm">Qty: {{ $item->quantity }}</p>
                         </div>
                         <p class="font-bold text-gray-700">${{ number_format($item->price * $item->quantity, 2) }}</p>

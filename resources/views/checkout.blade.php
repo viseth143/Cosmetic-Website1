@@ -139,7 +139,7 @@
                             <label class="flex items-center gap-3 cursor-pointer">
                                 <input type="radio" name="payment_method" value="aba" class="text-pink-500 payment-radio"
                                     {{ old('payment_method', 'aba') == 'aba' ? 'checked' : '' }}>
-                                <span>ABA Pay</span>
+                                <span>QR Pay</span>
                             </label>
 
                             {{-- Cash on Delivery — only for Phnom Penh --}}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\ProductOptionValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -45,7 +46,6 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        // Block admins from adding to cart
         if (Session::get('is_admin')) {
             return redirect()->back()->with('error', 'Admins cannot add items to cart.');
         }
@@ -59,18 +59,33 @@ class CartController extends Controller
         $cart     = $this->getOrCreateCart();
         $quantity = $request->quantity ?? 1;
 
+        // Build selected option label from submitted option values
+        $selectedOption = null;
+        $optionInputs   = array_filter($request->all(), fn($key) => str_starts_with($key, 'option_'), ARRAY_FILTER_USE_KEY);
+
+        if (!empty($optionInputs)) {
+            $labels = [];
+            foreach ($optionInputs as $valueId) {
+                $val = ProductOptionValue::find($valueId);
+                if ($val) $labels[] = $val->option_value;
+            }
+            $selectedOption = implode(', ', $labels);
+        }
+
         $item = CartItem::where('cart_id', $cart->cart_id)
                         ->where('product_id', $request->product_id)
+                        ->where('selected_option', $selectedOption)
                         ->first();
 
         if ($item) {
             $item->increment('quantity', $quantity);
         } else {
             CartItem::create([
-                'cart_id'    => $cart->cart_id,
-                'product_id' => $request->product_id,
-                'quantity'   => $quantity,
-                'price'      => $product->price,
+                'cart_id'         => $cart->cart_id,
+                'product_id'      => $request->product_id,
+                'quantity'        => $quantity,
+                'price'           => $product->price,
+                'selected_option' => $selectedOption,
             ]);
         }
 
@@ -86,8 +101,7 @@ class CartController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate(['quantity' => 'required|integer|min:1']);
-        $item = CartItem::findOrFail($id);
-        $item->update(['quantity' => $request->quantity]);
+        CartItem::findOrFail($id)->update(['quantity' => $request->quantity]);
         return redirect()->back();
     }
 }

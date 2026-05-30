@@ -15,11 +15,9 @@ class CheckoutController extends Controller
     private function getCart()
     {
         $customerId = Session::get('customer_id');
-
         if ($customerId) {
             return Cart::where('customer_id', $customerId)->first();
         }
-
         $cartId = session('cart_id');
         return $cartId ? Cart::find($cartId) : null;
     }
@@ -58,7 +56,7 @@ class CheckoutController extends Controller
             'payment_method' => 'required|in:aba,cod',
         ]);
 
-        $cart = $this->getCart();
+        $cart      = $this->getCart();
         $cartItems = $cart
             ? CartItem::with('product')->where('cart_id', $cart->cart_id)->get()
             : collect();
@@ -80,20 +78,21 @@ class CheckoutController extends Controller
 
         foreach ($cartItems as $item) {
             OrderItem::create([
-                'order_id'   => $order->order_id,
-                'product_id' => $item->product_id,
-                'quantity'   => $item->quantity,
-                'price'      => $item->price,
-                'total'      => $item->price * $item->quantity,
+                'order_id'        => $order->order_id,
+                'product_id'      => $item->product_id,
+                'quantity'        => $item->quantity,
+                'price'           => $item->price,
+                'total'           => $item->price * $item->quantity,
+                'selected_option' => $item->selected_option,
             ]);
         }
 
         Session::put('order_id', $order->order_id);
         Session::put('order_total', $total);
+        Session::put('payment_method', $request->payment_method);
         Session::put('checkout_data', $request->only(
             'first_name', 'last_name', 'email', 'phone',
-            'province', 'district', 'address', 'delivery_note',
-            'payment_method'
+            'province', 'district', 'address', 'delivery_note', 'payment_method'
         ));
 
         return redirect()->route('payment');

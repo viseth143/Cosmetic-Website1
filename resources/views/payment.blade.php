@@ -5,7 +5,7 @@
 <section class="bg-pink-100 py-16">
     <div class="container mx-auto px-6 text-center">
         <h1 class="text-5xl font-bold text-pink-600 mb-4">Payment</h1>
-        <p class="text-lg text-gray-700">Complete your payment via QR Pay</p>
+        <p class="text-lg text-gray-700">Complete your payment</p>
     </div>
 </section>
 
@@ -13,6 +13,7 @@
     <div class="container mx-auto px-6">
         <div class="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
 
+            @if($paymentMethod === 'aba')
             <!-- QR CODE + UPLOAD -->
             <div class="bg-white rounded-3xl shadow-lg p-10 text-center">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Scan to Pay</h2>
@@ -39,6 +40,18 @@
                     <img id="preview" class="hidden mt-4 mx-auto rounded-xl max-h-40 object-cover shadow" />
                 </div>
             </div>
+            @else
+            <!-- CASH ON DELIVERY INFO -->
+            <div class="bg-white rounded-3xl shadow-lg p-10 text-center flex flex-col items-center justify-center">
+                <div class="text-7xl mb-6">🚚</div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">Cash on Delivery</h2>
+                <p class="text-gray-500 mb-6">You will pay when your order arrives at your doorstep.</p>
+                <div class="bg-green-50 border border-green-200 rounded-2xl p-5 w-full text-left">
+                    <p class="font-bold text-green-700 mb-2">✅ No payment needed now</p>
+                    <p class="text-green-600 text-sm">Please prepare the exact amount when our delivery arrives. Thank you!</p>
+                </div>
+            </div>
+            @endif
 
             <!-- ORDER SUMMARY + CONFIRM -->
             <div class="bg-white rounded-3xl shadow-lg p-10">
@@ -52,6 +65,9 @@
                             class="w-14 h-14 rounded-xl object-cover">
                         <div>
                             <p class="font-bold text-sm">{{ $item->product->name }}</p>
+                            @if($item->product->description)
+                            <p class="text-pink-500 text-xs font-medium">{{ $item->product->description }}</p>
+                            @endif
                             <p class="text-gray-500 text-xs">Qty: {{ $item->quantity }}</p>
                         </div>
                     </div>
@@ -67,11 +83,8 @@
                     <div class="flex justify-between text-gray-600">
                         <span>Shipping</span>
                         <span class="font-bold">
-                            @if($shipping == 0)
-                            <span class="text-green-500">Free 🎉</span>
-                            @else
-                            ${{ number_format($shipping, 2) }}
-                            @endif
+                            @if($shipping == 0)<span class="text-green-500">Free 🎉</span>
+                            @else ${{ number_format($shipping, 2) }} @endif
                         </span>
                     </div>
                     <div class="flex justify-between text-xl font-bold border-t pt-4">
@@ -83,10 +96,11 @@
                 <p class="text-gray-400 text-center py-4">No items found.</p>
                 @endif
 
+                @if($paymentMethod === 'aba')
                 <div class="mt-6 bg-pink-50 rounded-2xl p-5">
                     <p class="font-bold text-gray-700 mb-3">How to pay:</p>
                     <ol class="space-y-2 text-sm text-gray-600 list-decimal list-inside">
-                        <li>Open your <span class="font-semibold text-pink-500">Payment</span> app</li>
+                        <li>Open your <span class="font-semibold text-pink-500">ABA</span> app</li>
                         <li>Tap <span class="font-semibold">Pay → Scan QR</span></li>
                         <li>Scan the QR code on the left</li>
                         <li>Enter the amount and confirm</li>
@@ -94,19 +108,25 @@
                         <li>Click <span class="font-semibold text-pink-500">I've Paid</span> below</li>
                     </ol>
                 </div>
+                @endif
 
                 <form action="{{ route('order.success') }}" method="POST" enctype="multipart/form-data" id="paymentForm">
                     @csrf
+                    @if($paymentMethod === 'aba')
                     <input type="file" id="screenshot-input" name="payment_screenshot" accept="image/*" class="hidden">
 
-                    <p id="upload-warning" class="hidden text-red-500 text-sm mt-4 text-center font-medium">
-                        ⚠️ Please upload your payment screenshot first.
-                    </p>
-
-                    <button type="submit"
-                        class="block text-center w-full mt-6 bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-2xl text-lg font-semibold transition">
+                    <button type="submit" id="confirmBtn" disabled
+                        class="block text-center w-full mt-6 bg-pink-300 text-white py-4 rounded-2xl text-lg font-semibold cursor-not-allowed transition">
                         ✅ I've Paid — Confirm Order
                     </button>
+                    <p class="text-center text-gray-400 text-sm mt-2">⚠️ Please upload your screenshot to continue</p>
+
+                    @else
+                    <button type="submit"
+                        class="block text-center w-full mt-6 bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-2xl text-lg font-semibold transition">
+                        🚚 Confirm Order
+                    </button>
+                    @endif
                 </form>
 
                 <a href="{{ route('cart') }}"
@@ -118,12 +138,12 @@
     </div>
 </section>
 
+@if($paymentMethod === 'aba')
 <script>
-    const input = document.getElementById('screenshot-input');
-    const preview = document.getElementById('preview');
-    const fileName = document.getElementById('file-name');
-    const form = document.getElementById('paymentForm');
-    const warning = document.getElementById('upload-warning');
+    const input      = document.getElementById('screenshot-input');
+    const preview    = document.getElementById('preview');
+    const fileName   = document.getElementById('file-name');
+    const confirmBtn = document.getElementById('confirmBtn');
 
     document.querySelector('label[for="screenshot-input"]').addEventListener('click', function(e) {
         e.preventDefault();
@@ -134,7 +154,9 @@
         const file = this.files[0];
         if (file) {
             fileName.textContent = file.name;
-            warning.classList.add('hidden');
+            confirmBtn.disabled = false;
+            confirmBtn.classList.remove('bg-pink-300', 'cursor-not-allowed');
+            confirmBtn.classList.add('bg-pink-500', 'hover:bg-pink-600', 'cursor-pointer');
             const reader = new FileReader();
             reader.onload = e => {
                 preview.src = e.target.result;
@@ -143,14 +165,7 @@
             reader.readAsDataURL(file);
         }
     });
-
-    form.addEventListener('submit', function(e) {
-        if (!input.files || input.files.length === 0) {
-            e.preventDefault();
-            warning.classList.remove('hidden');
-            document.getElementById('screenshot-input').scrollIntoView({ behavior: 'smooth' });
-        }
-    });
 </script>
+@endif
 
 @endsection
